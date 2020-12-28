@@ -1,14 +1,9 @@
 #include <iostream>
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 int main() {
-
-    for(int i = 0; i < 10; i++) {
-        std::cout << "Coffee rocks!!!" << std::endl;
-    }
-
-    // ########## Testing GLFW module... ##########
 
     GLFWwindow* window;
 
@@ -24,7 +19,15 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    // Make the window's current context
     glfwMakeContextCurrent(window);
+
+    if(glewInit() != GLEW_OK) {
+        fprintf(stderr, "Failed to initialize GLEW\n");
+        exit(EXIT_FAILURE);
+    }
+
+    std::cout << "Using GL Version: "<< glGetString(GL_VERSION) << std::endl;
 
     // Main loop
     while(!glfwWindowShouldClose(window)) {
@@ -46,9 +49,6 @@ int main() {
 
     // Terminate GLFW
     glfwTerminate();
-
-    // ########## End Testing GLFW module... ##########
-
 
     return 0;
 }
