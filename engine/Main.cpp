@@ -9,8 +9,8 @@ int main() {
     }
 
     // ########## Testing GLFW module... ##########
-    
-    GLFWwindow *window;
+
+    GLFWwindow* window;
 
     if(!glfwInit()) {
         fprintf(stderr, "Failed to initialize GLFW\n");
@@ -24,8 +24,20 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    glfwMakeContextCurrent(window);
+
     // Main loop
     while(!glfwWindowShouldClose(window)) {
+
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glColor3f(0.5f, 0.0f, 1.0f);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f( 0.0f,  0.5f);
+        glVertex2f( 0.5f, -0.5f);
+        glEnd();
+
         //draw();
         //animate();
         glfwSwapBuffers(window);
