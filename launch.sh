@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Configure
-cmake -S . -B build
+cmake -DGLFW_BUILD_DOCS=OFF -S . -B build
 
 # Build
 cd build ; make
