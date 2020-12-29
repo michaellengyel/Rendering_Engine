@@ -8,3 +8,8 @@ https://www.youtube.com/watch?v=ED-WUk440qc
 GLEW was integrating as a submodule based from the following git repository:   
 https://github.com/Perlmint/glew-cmake   
 https://stackoverflow.com/questions/49434279/adding-glew-to-project-cmake   
+
+### System Dependencies
+####Linux:   
+*Compiler error:* error: GLSL 3.30 is not supported.   
+*Resolved by Linux command:* export MESA_GL_VERSION_OVERRIDE=3.3   
