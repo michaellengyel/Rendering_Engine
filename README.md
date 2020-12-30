@@ -10,6 +10,6 @@ https://github.com/Perlmint/glew-cmake
 https://stackoverflow.com/questions/49434279/adding-glew-to-project-cmake   
 
 ### System Dependencies
-####Linux:   
+#### Linux:   
 *Compiler error:* error: GLSL 3.30 is not supported.   
 *Resolved by Linux command:* export MESA_GL_VERSION_OVERRIDE=3.3   

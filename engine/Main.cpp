@@ -109,6 +109,9 @@ int main() {
     // Make the window's current context
     glfwMakeContextCurrent(window);
 
+    // Syncronizing buffer swap with monitor refresh rate
+    glfwSwapInterval(1);
+
     if(glewInit() != GLEW_OK) {
         fprintf(stderr, "Failed to initialize GLEW\n");
         exit(EXIT_FAILURE);
@@ -123,34 +126,62 @@ int main() {
     // Vertex and Fragment shader
 
     // Vertex data
-    float positions[6] = {
-        -0.5f, -0.5f,
-         0.0f,  0.5f,
-         0.5f, -0.5f
+    float positions[] = {
+        -0.5f, -0.5f, // 0
+         0.5f, -0.5f, // 1
+         0.5f,  0.5f, // 2
+        -0.5f,  0.5f  // 3
     };
 
-    ShaderProgramSource source = parseShader("../basic.sh");
-    //std::cout << source.vertexSource << std::endl;
-    //std::cout << source.fragmentSource << std::endl;
-    //std::cout << "End Test" << std::endl;
+    // Index buffer
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
 
+    ShaderProgramSource source = parseShader("../engine/res/shaders/basic.sh");
     unsigned int shader = createShader(source.vertexSource, source.fragmentSource);
     glUseProgram(shader);
+
+    // Saving location of uniforms from shader
+    int location = glGetUniformLocation(shader, "u_Color");
 
     unsigned int bufferId;
     glGenBuffers(1, &bufferId);
     glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
+
+    // Index buffer object Id
+    unsigned int iboId;
+    glGenBuffers(1, &iboId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+
+    // Temp uniform variable
+    float red = 0.0f;
+    float increment = 0.05f;
 
     // Main loop
     while(!glfwWindowShouldClose(window)) {
 
-        // Render here
+        // Clear buffer
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // Uniforms changing logic
+        glUniform4f(location, red, 0.0f, 0.5f, 1.0f);
+        if (red > 1.0f) {
+            increment = -0.05f;
+        } else if (red < 0.0f) {
+            increment = 0.05f;
+        }
+        red += increment;
+
+        // Draw call
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         // Swap front and back buffers
         glfwSwapBuffers(window);
