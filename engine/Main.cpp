@@ -3,8 +3,12 @@
 #include <string>
 #include <sstream>
 
+#include "renderer/VertexBuffer.h"
+#include "renderer/IndexBuffer.h"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 
 struct ShaderProgramSource {
 
@@ -94,6 +98,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    // Setting the opengl profile to core
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -119,13 +124,11 @@ int main() {
 
     std::cout << "Using GL Version: "<< glGetString(GL_VERSION) << std::endl;
 
-    unsigned int vao = 0;
+    unsigned int vao;
     glCreateVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    // Vertex and Fragment shader
-
-    // Vertex data
+    // Vertex data (buffer)
     float positions[] = {
         -0.5f, -0.5f, // 0
          0.5f, -0.5f, // 1
@@ -146,20 +149,19 @@ int main() {
     // Saving location of uniforms from shader
     int location = glGetUniformLocation(shader, "u_Color");
 
-    unsigned int bufferId;
-    glGenBuffers(1, &bufferId);
-    glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
+    VertexBuffer vertexBuffer(positions, 4 * 2 * sizeof(float));
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0); // Links buffer with vao
 
     // Index buffer object Id
-    unsigned int iboId;
-    glGenBuffers(1, &iboId);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    IndexBuffer indexBuffer(indices, 6);
 
+    // Unbinding all buffers (rebind them before drawc all)
+    glBindVertexArray(0);
+    glUseProgram(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // Temp uniform variable
     float red = 0.0f;
@@ -171,17 +173,23 @@ int main() {
         // Clear buffer
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Binding all objects
+        glUseProgram(shader); // Set shader
+        glUniform4f(location, red, 0.0f, 0.5f, 1.0f); // Set uniform
+
+        glBindVertexArray(vao); // Bind vertex array
+        indexBuffer.bind(); // Bind index buffer
+
+        // Draw call
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
         // Uniforms changing logic
-        glUniform4f(location, red, 0.0f, 0.5f, 1.0f);
         if (red > 1.0f) {
             increment = -0.05f;
         } else if (red < 0.0f) {
             increment = 0.05f;
         }
         red += increment;
-
-        // Draw call
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         // Swap front and back buffers
         glfwSwapBuffers(window);

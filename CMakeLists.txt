@@ -15,7 +15,11 @@ add_subdirectory(engine)
 add_subdirectory(engine/vendor/glew-cmake/build/cmake)
 
 # add the executable
-add_executable(${PROJECT_NAME} engine/Main.cpp)
+add_executable(${PROJECT_NAME}  engine/Main.cpp 
+                                engine/renderer/IndexBuffer.cpp 
+                                engine/renderer/VertexBuffer.cpp
+                                engine/renderer/Renderer.cpp
+                                )
 
 # Check dependencies
 find_package(OpenGL REQUIRED)
