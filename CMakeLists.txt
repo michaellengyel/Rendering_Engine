@@ -20,6 +20,7 @@ add_executable(${PROJECT_NAME}  engine/Main.cpp
                                 engine/renderer/VertexBuffer.cpp 
                                 engine/renderer/VertexArray.cpp 
                                 engine/renderer/Renderer.cpp 
+                                engine/renderer/Shader.cpp 
                                 )
 
 # Check dependencies

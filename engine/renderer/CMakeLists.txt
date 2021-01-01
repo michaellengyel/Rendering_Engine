@@ -8,4 +8,6 @@ add_library(renderer STATIC
         VertexBufferLayout.h
         VertexArray.cpp
         VertexArray.h
+        Shader.cpp
+        Shader.h
         )
