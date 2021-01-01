@@ -4,22 +4,26 @@
 
 #pragma once
 
-#include "Renderer.h"
+#include "VertexBufferLayout.h"
+
 
 //============================================================================================================
 // Class Trivia
 //============================================================================================================
 
-class VertexBuffer {
-
+class VertexArray {
 public:
-    VertexBuffer(const void* data, unsigned int size);
-    ~VertexBuffer();
+
+    VertexArray();
+    ~VertexArray();
+
+    void addBuffer(const VertexBuffer& vertexBuffer, const VertexBufferLayout& vertexBufferLayout);
 
     void bind() const;
-    
-    void unbind() const;
+    void unBind() const;
 
 private:
+
     unsigned int mRendererId;
+
 };

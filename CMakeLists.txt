@@ -17,8 +17,9 @@ add_subdirectory(engine/vendor/glew-cmake/build/cmake)
 # add the executable
 add_executable(${PROJECT_NAME}  engine/Main.cpp 
                                 engine/renderer/IndexBuffer.cpp 
-                                engine/renderer/VertexBuffer.cpp
-                                engine/renderer/Renderer.cpp
+                                engine/renderer/VertexBuffer.cpp 
+                                engine/renderer/VertexArray.cpp 
+                                engine/renderer/Renderer.cpp 
                                 )
 
 # Check dependencies

@@ -4,11 +4,11 @@
 #include <sstream>
 
 #include "renderer/VertexBuffer.h"
+#include "renderer/VertexArray.h"
 #include "renderer/IndexBuffer.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 
 struct ShaderProgramSource {
 
@@ -124,10 +124,6 @@ int main() {
 
     std::cout << "Using GL Version: "<< glGetString(GL_VERSION) << std::endl;
 
-    unsigned int vao;
-    glCreateVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
     // Vertex data (buffer)
     float positions[] = {
         -0.5f, -0.5f, // 0
@@ -149,10 +145,11 @@ int main() {
     // Saving location of uniforms from shader
     int location = glGetUniformLocation(shader, "u_Color");
 
+    VertexArray vertexArray;
     VertexBuffer vertexBuffer(positions, 4 * 2 * sizeof(float));
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0); // Links buffer with vao
+    VertexBufferLayout vertexBufferLayout;
+    vertexBufferLayout.push<float>(2);
+    vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
 
     // Index buffer object Id
     IndexBuffer indexBuffer(indices, 6);
@@ -177,7 +174,7 @@ int main() {
         glUseProgram(shader); // Set shader
         glUniform4f(location, red, 0.0f, 0.5f, 1.0f); // Set uniform
 
-        glBindVertexArray(vao); // Bind vertex array
+        vertexArray.bind();
         indexBuffer.bind(); // Bind index buffer
 
         // Draw call

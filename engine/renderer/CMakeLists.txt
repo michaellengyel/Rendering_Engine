@@ -5,4 +5,7 @@ add_library(renderer STATIC
         IndexBuffer.h
         VertexBuffer.cpp
         VertexBuffer.h
+        VertexBufferLayout.h
+        VertexArray.cpp
+        VertexArray.h
         )
