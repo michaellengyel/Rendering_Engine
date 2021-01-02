@@ -9,8 +9,11 @@ GLEW was integrating as a submodule based from the following git repository:
 https://github.com/Perlmint/glew-cmake   
 https://stackoverflow.com/questions/49434279/adding-glew-to-project-cmake   
 
-The Cherno's OpenGL series   
+The Cherno's OpenGL series:   
 https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2   
+
+Image loading:   
+https://raw.githubusercontent.com/nothings/stb/master/stb_image.h   
 
 ### System Dependencies
 #### Linux:   

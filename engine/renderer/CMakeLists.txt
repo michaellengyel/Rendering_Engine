@@ -10,4 +10,6 @@ add_library(renderer STATIC
         VertexArray.h
         Shader.cpp
         Shader.h
+        Texture.cpp
+        Texture.h
         )

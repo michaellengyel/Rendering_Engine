@@ -5,6 +5,7 @@
 #include "renderer/VertexArray.h"
 #include "renderer/IndexBuffer.h"
 #include "renderer/Shader.h"
+#include "renderer/Texture.h"
 
 #include <GLFW/glfw3.h>
 
@@ -46,10 +47,10 @@ int main() {
 
     // Vertex data (buffer)
     float positions[] = {
-        -0.5f, -0.5f, // 0
-         0.5f, -0.5f, // 1
-         0.5f,  0.5f, // 2
-        -0.5f,  0.5f  // 3
+        -0.5f, -0.5f, 0.0f, 0.0f, // 0
+         0.5f, -0.5f, 1.0f, 0.0f, // 1
+         0.5f,  0.5f, 1.0f, 1.0f, // 2
+        -0.5f,  0.5f, 0.0f, 1.0f  // 3
     };
 
     // Index buffer
@@ -59,18 +60,24 @@ int main() {
     };
 
     VertexArray vertexArray;
-    VertexBuffer vertexBuffer(positions, 4 * 2 * sizeof(float));
+    VertexBuffer vertexBuffer(positions, 4 * 4 * sizeof(float));
     VertexBufferLayout vertexBufferLayout;
-    vertexBufferLayout.push<float>(2);
+    vertexBufferLayout.push<float>(2); // First 2 floats of vertex
+    vertexBufferLayout.push<float>(2); // Second 2 floats of vertex
     vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
 
     // Index buffer object Id
     IndexBuffer indexBuffer(indices, 6);
 
     // Saving location of uniforms from shader
-    Shader shader("../engine/res/shaders/basic.sh");
+    Shader shader("../engine/res/shaders/texture.sh");
     shader.bind();
     shader.setUnifrom4f("u_Color", 0.8f, 0.0f, 0.5f, 1.0f);
+
+    // Adding textures
+    Texture texture("../engine/res/images/gray.png");
+    texture.bind();
+    shader.setUnifrom1i("u_Texture", 0); // 0 stands for slot 0
 
     // Unbinding all buffers (rebind them before draw all)
     vertexArray.unBind();

@@ -29,6 +29,9 @@ public:
     void unBind() const;
 
     // Set uniforms
+    
+    void setUnifrom1i(const std::string& name, int value);
+
     void setUnifrom4f(const std::string& name, float v0, float v1, float v2, float v3);
 
 private:
@@ -45,6 +48,6 @@ private:
 
     int createShader(const std::string& vertexShader, const std::string fragmentShader);
 
-    unsigned int getUniformLocation(const std::string& name);
+    int getUniformLocation(const std::string& name);
 
 };

@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME}  engine/Main.cpp
                                 engine/renderer/VertexArray.cpp 
                                 engine/renderer/Renderer.cpp 
                                 engine/renderer/Shader.cpp 
+                                engine/renderer/Texture.cpp 
+                                engine/vendor/stb_image/stb_image.cpp 
                                 )
 
 # Check dependencies
