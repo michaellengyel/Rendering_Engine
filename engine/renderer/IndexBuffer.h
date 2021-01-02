@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "Renderer.h"
-
 //============================================================================================================
 // Class Trivia
 //============================================================================================================
@@ -18,6 +16,8 @@ public:
 
     void bind() const;
     void unbind() const;
+
+    unsigned int getCount() const;
 
 private:
     unsigned int mRendererId;

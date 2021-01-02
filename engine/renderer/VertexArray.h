@@ -5,7 +5,7 @@
 #pragma once
 
 #include "VertexBufferLayout.h"
-
+#include "VertexBuffer.h"
 
 //============================================================================================================
 // Class Trivia

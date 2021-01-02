@@ -1,11 +1,11 @@
 #include <iostream>
 
+#include "renderer/Renderer.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/VertexArray.h"
 #include "renderer/IndexBuffer.h"
 #include "renderer/Shader.h"
 
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 int main() {
@@ -41,6 +41,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    // Log GL verion
     std::cout << "Using GL Version: "<< glGetString(GL_VERSION) << std::endl;
 
     // Vertex data (buffer)
@@ -77,6 +78,9 @@ int main() {
     indexBuffer.unbind();
     shader.unBind();
 
+    // Instantiate renderer
+    Renderer renderer;
+
     // Temp uniform variable
     float red = 0.0f;
     float increment = 0.05f;
@@ -84,18 +88,11 @@ int main() {
     // Main loop
     while(!glfwWindowShouldClose(window)) {
 
-        // Clear buffer
-        glClear(GL_COLOR_BUFFER_BIT);
+        renderer.clear();
 
-        // Binding all objects
-        shader.bind(); // Set shader
         shader.setUnifrom4f("u_Color", red, 0.0f, 0.5f, 1.0f); // Set uniform
 
-        vertexArray.bind();
-        indexBuffer.bind(); // Bind index buffer
-
-        // Draw call
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        renderer.draw(vertexArray, indexBuffer, shader);
 
         // Uniforms changing logic
         if (red > 1.0f) {
