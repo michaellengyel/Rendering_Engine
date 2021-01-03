@@ -26,7 +26,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(680, 460, "GLFW Window", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "GLFW Window", NULL, NULL);
 
     if(!window) {
         fprintf(stderr, "Failed to initialize GLFW\n");
@@ -72,18 +72,26 @@ int main() {
     // Index buffer object Id
     IndexBuffer indexBuffer(indices, 6);
 
-    // Adding glm prototype code
-    glm::mat4 proj = glm::ortho(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    /// Implementing Projection Matrix (counteract window distortion (only needs to be set once))
+    glm::mat4 projection = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    // Implementing View Matrix
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(1, 0, 0));
+    // Implementing Model Matrix
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(1, 1, 0));
+
+    // Calculating Model View Projection Matrix
+    glm::mat4 modelViewProjection = projection * view * model;
 
     // Saving location of uniforms from shader
     Shader shader("../engine/res/shaders/texture.sh");
     shader.bind();
-    shader.setUnifrom4f("u_Color", 0.8f, 0.0f, 0.5f, 1.0f);
+    shader.setUniform4f("u_Color", 0.8f, 0.0f, 0.5f, 1.0f);
+    shader.setUniformMat4f("u_ModelViewProjection", modelViewProjection);
 
     // Adding textures
     Texture texture("../engine/res/images/gray.png");
     texture.bind();
-    shader.setUnifrom1i("u_Texture", 0); // 0 stands for slot 0
+    shader.setUniform1i("u_Texture", 0); // 0 stands for slot 0
 
     // Unbinding all buffers (rebind them before draw all)
     vertexArray.unBind();
@@ -103,7 +111,7 @@ int main() {
 
         renderer.clear();
 
-        shader.setUnifrom4f("u_Color", red, 0.0f, 0.5f, 1.0f); // Set uniform
+        shader.setUniform4f("u_Color", red, 0.0f, 0.5f, 1.0f); // Set uniform
 
         renderer.draw(vertexArray, indexBuffer, shader);
 
