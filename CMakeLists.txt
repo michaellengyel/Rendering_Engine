@@ -31,6 +31,7 @@ find_package(OpenGL REQUIRED)
 # add include directories
 target_include_directories(${PROJECT_NAME} PUBLIC engine/vendor/glew-cmake/include)
 target_include_directories(${PROJECT_NAME} PUBLIC engine/vendor/glfw/include)
+target_include_directories(${PROJECT_NAME} PUBLIC engine/vendor)
 
 # add link to directories
 target_link_directories(${PROJECT_NAME} PRIVATE engine/vendor/glew/src)

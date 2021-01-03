@@ -9,6 +9,9 @@
 
 #include <GLFW/glfw3.h>
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 int main() {
 
     GLFWwindow* window;
@@ -68,6 +71,9 @@ int main() {
 
     // Index buffer object Id
     IndexBuffer indexBuffer(indices, 6);
+
+    // Adding glm prototype code
+    glm::mat4 proj = glm::ortho(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
     // Saving location of uniforms from shader
     Shader shader("../engine/res/shaders/texture.sh");

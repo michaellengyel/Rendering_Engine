@@ -1,7 +1,7 @@
 # Rendering Engine
 A rending engine for rendering 3D objects. The objective of this software peoject is to create a rendering engine which enables the rendeing of 3D models and implements a camera view to view said objects from any desirable point. The software should furthermore implement a user input, and make the objects clickable.
 
-### Used Guides
+### Used Sources/Dependencies
 GLFW was integrating as a submodule based the following guide:   
 https://www.youtube.com/watch?v=ED-WUk440qc   
 
@@ -14,6 +14,9 @@ https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2
 
 Image loading:   
 https://raw.githubusercontent.com/nothings/stb/master/stb_image.h   
+
+Linear Algebra Library (header only):   
+https://github.com/g-truc/glm   
 
 ### System Dependencies
 #### Linux:   
