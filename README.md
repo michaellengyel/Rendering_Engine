@@ -12,11 +12,14 @@ https://stackoverflow.com/questions/49434279/adding-glew-to-project-cmake
 The Cherno's OpenGL series:   
 https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2   
 
-Image loading:   
+Integrating stb_image for Image loading:   
 https://raw.githubusercontent.com/nothings/stb/master/stb_image.h   
 
-Linear Algebra Library (header only):   
+Linear Algebra Library (glm), (header only):   
 https://github.com/g-truc/glm   
+
+Integrating imgui v1.79 for development assist (GUI):   
+https://github.com/ocornut/imgui   
 
 ### System Dependencies
 #### Linux:   

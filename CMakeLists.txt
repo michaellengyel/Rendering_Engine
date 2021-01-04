@@ -23,6 +23,12 @@ add_executable(${PROJECT_NAME}  engine/Main.cpp
                                 engine/renderer/Shader.cpp 
                                 engine/renderer/Texture.cpp 
                                 engine/vendor/stb_image/stb_image.cpp 
+				engine/vendor/imgui/imgui.cpp 
+				engine/vendor/imgui/imgui_demo.cpp 
+				engine/vendor/imgui/imgui_draw.cpp 
+                                engine/vendor/imgui/imgui_widgets.cpp 
+                                engine/vendor/imgui/imgui_impl_glfw.cpp 
+                                engine/vendor/imgui/imgui_impl_opengl3.cpp 
                                 )
 
 # Check dependencies
