@@ -16,7 +16,16 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+struct WindowSize
+{
+    WindowSize(int width, int height) : m_width(width), m_height(height) {}
+    float m_width;
+    float m_height;
+};
+
 int main() {
+
+    WindowSize windowSize(940.0f, 540.0f);
 
     GLFWwindow* window;
 
@@ -30,7 +39,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(800, 600, "GLFW Window", NULL, NULL);
+    window = glfwCreateWindow(windowSize.m_width, windowSize.m_height, "GLFW Window", NULL, NULL);
 
     if(!window) {
         fprintf(stderr, "Failed to initialize GLFW\n");
@@ -54,10 +63,10 @@ int main() {
 
     // Vertex data (buffer)
     float positions[] = {
-        -0.5f, -0.5f, 0.0f, 0.0f, // 0
-         0.5f, -0.5f, 1.0f, 0.0f, // 1
-         0.5f,  0.5f, 1.0f, 1.0f, // 2
-        -0.5f,  0.5f, 0.0f, 1.0f  // 3
+        100.0f, 100.0f, 0.0f, 0.0f, // 0
+        200.0f, 100.0f, 1.0f, 0.0f, // 1
+        200.0f, 200.0f, 1.0f, 1.0f, // 2
+        100.0f, 200.0f, 0.0f, 1.0f  // 3
     };
 
     // Index buffer
@@ -77,7 +86,7 @@ int main() {
     IndexBuffer indexBuffer(indices, 6);
 
     /// Implementing Projection Matrix (counteract window distortion (only needs to be set once))
-    glm::mat4 projection = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(0.0f, windowSize.m_width, 0.0f, windowSize.m_height, -1.0f, 1.0f);
     // Implementing View Matrix
     glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(1, 0, 0));
     // Implementing Model Matrix
