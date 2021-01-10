@@ -7,6 +7,9 @@
 #include "renderer/Shader.h"
 #include "renderer/Texture.h"
 
+#include "statemachine/State.h"
+#include "statemachine/StateClearColor.h"
+
 #include <GLFW/glfw3.h>
 
 #include "glm/glm.hpp"
@@ -136,15 +139,18 @@ int main() {
     float red = 0.0f;
     float increment = 0.05f;
 
+    sm::State* state = nullptr;
+    sm::StateMenu* stateMenu = new sm::StateMenu(state);
+    state = stateMenu;
+
+    stateMenu->addState<sm::StateClearColor>("Clear Color");
+
     // Main loop
     while(!glfwWindowShouldClose(window)) {
 
-        renderer.clear();
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        renderer.clear();
 
         shader.setUniform4f("u_Color", red, 0.0f, 0.5f, 1.0f); // Set uniform
 
@@ -158,6 +164,12 @@ int main() {
         }
         red += increment;
 
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        /*
         // Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
         if (show_demo_window)
         {
@@ -190,6 +202,23 @@ int main() {
                 show_another_window = false;
             ImGui::End();
         }
+        */
+
+        // GUI State
+        if(state) {
+            state->update(0.0f);
+            state->render();
+            ImGui::Begin("State");
+
+            if((state != stateMenu) && (ImGui::Button("Main Menu"))) {
+                
+                delete state;
+                state = stateMenu;
+            }
+
+            state->guiRender();
+            ImGui::End();
+        }
 
         // Render Imgui
         ImGui::Render();
@@ -200,6 +229,11 @@ int main() {
 
         // Poll for and process events
         glfwPollEvents();
+    }
+
+    delete state;
+    if(state != stateMenu) {
+        delete stateMenu;
     }
 
     // Cleanup imgui
