@@ -1,14 +1,15 @@
 #include <iostream>
 
 #include "renderer/Renderer.h"
-#include "renderer/VertexBuffer.h"
-#include "renderer/VertexArray.h"
-#include "renderer/IndexBuffer.h"
-#include "renderer/Shader.h"
-#include "renderer/Texture.h"
+// #include "renderer/VertexBuffer.h"
+// #include "renderer/VertexArray.h"
+// #include "renderer/IndexBuffer.h"
+// #include "renderer/Shader.h"
+// #include "renderer/Texture.h"
 
 #include "statemachine/State.h"
 #include "statemachine/StateClearColor.h"
+#include "statemachine/StateTexture.h"
 
 #include <GLFW/glfw3.h>
 
@@ -64,60 +65,6 @@ int main() {
     // Log GL verion
     std::cout << "Using GL Version: "<< glGetString(GL_VERSION) << std::endl;
 
-    // Vertex data (buffer)
-    float positions[] = {
-        100.0f, 100.0f, 0.0f, 0.0f, // 0
-        200.0f, 100.0f, 1.0f, 0.0f, // 1
-        200.0f, 200.0f, 1.0f, 1.0f, // 2
-        100.0f, 200.0f, 0.0f, 1.0f  // 3
-    };
-
-    // Index buffer
-    unsigned int indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    VertexArray vertexArray;
-    VertexBuffer vertexBuffer(positions, 4 * 4 * sizeof(float));
-    VertexBufferLayout vertexBufferLayout;
-    vertexBufferLayout.push<float>(2); // First 2 floats of vertex
-    vertexBufferLayout.push<float>(2); // Second 2 floats of vertex
-    vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
-
-    // Index buffer object Id
-    IndexBuffer indexBuffer(indices, 6);
-
-    /// Implementing Projection Matrix (counteract window distortion (only needs to be set once))
-    glm::mat4 projection = glm::ortho(0.0f, windowSize.m_width, 0.0f, windowSize.m_height, -1.0f, 1.0f);
-    // Implementing View Matrix
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(1, 0, 0));
-    // Implementing Model Matrix
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(1, 1, 0));
-
-    // Calculating Model View Projection Matrix
-    glm::mat4 modelViewProjection = projection * view * model;
-
-    // Saving location of uniforms from shader
-    Shader shader("../engine/res/shaders/texture.sh");
-    shader.bind();
-    shader.setUniform4f("u_Color", 0.8f, 0.0f, 0.5f, 1.0f);
-    shader.setUniformMat4f("u_ModelViewProjection", modelViewProjection);
-
-    // Adding textures
-    Texture texture("../engine/res/images/gray.png");
-    texture.bind();
-    shader.setUniform1i("u_Texture", 0); // 0 stands for slot 0
-
-    // Unbinding all buffers (rebind them before draw all)
-    vertexArray.unBind();
-    vertexBuffer.unbind();
-    indexBuffer.unbind();
-    shader.unBind();
-
-    // Instantiate renderer
-    Renderer renderer;
-
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -135,34 +82,20 @@ int main() {
     bool show_another_window = true;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    // Temp uniform variable
-    float red = 0.0f;
-    float increment = 0.05f;
+    Renderer renderer;
 
     sm::State* state = nullptr;
     sm::StateMenu* stateMenu = new sm::StateMenu(state);
     state = stateMenu;
 
     stateMenu->addState<sm::StateClearColor>("Clear Color");
+    stateMenu->addState<sm::StateTexture>("Render Texture");
 
     // Main loop
     while(!glfwWindowShouldClose(window)) {
 
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
         renderer.clear();
-
-        shader.setUniform4f("u_Color", red, 0.0f, 0.5f, 1.0f); // Set uniform
-
-        renderer.draw(vertexArray, indexBuffer, shader);
-
-        // Uniforms changing logic
-        if (red > 1.0f) {
-            increment = -0.05f;
-        } else if (red < 0.0f) {
-            increment = 0.05f;
-        }
-        red += increment;
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();

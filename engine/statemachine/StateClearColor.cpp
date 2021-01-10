@@ -15,6 +15,7 @@ StateClearColor::~StateClearColor() {
 
 void StateClearColor::update(float deltaTime) {
 
+    // Animate stuff here
 }
 
 void StateClearColor::render() {

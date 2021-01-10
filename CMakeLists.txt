@@ -24,6 +24,7 @@ add_executable(${PROJECT_NAME}  engine/Main.cpp
                                 engine/renderer/Texture.cpp 
                                 engine/statemachine/State.cpp 
                                 engine/statemachine/StateClearColor.cpp 
+                                engine/statemachine/StateTexture.cpp 
                                 engine/vendor/stb_image/stb_image.cpp 
 				engine/vendor/imgui/imgui.cpp 
 				engine/vendor/imgui/imgui_demo.cpp 
