@@ -10,6 +10,7 @@
 #include "statemachine/State.h"
 #include "statemachine/StateClearColor.h"
 #include "statemachine/StateTexture.h"
+#include "statemachine/StateBatchRender.h"
 
 #include <GLFW/glfw3.h>
 
@@ -90,6 +91,8 @@ int main() {
 
     stateMenu->addState<sm::StateClearColor>("Clear Color");
     stateMenu->addState<sm::StateTexture>("Render Texture");
+    stateMenu->addState<sm::StateBatchRender>("Render Batch");
+
 
     // Main loop
     while(!glfwWindowShouldClose(window)) {

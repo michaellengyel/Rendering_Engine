@@ -5,4 +5,6 @@ add_library(statemachine STATIC
         StateClearColor.h
         StateTexture.cpp
         StateTexture.h
+        StateBatchRender.cpp
+        StateBatchRender.h
         )
