@@ -16,34 +16,63 @@
 
 namespace sm {
 
+const size_t maxQuadCount = 10000;
+const size_t maxVertexCount = 4 * maxQuadCount;
+const size_t maxIndexCount = 6 * maxQuadCount;
+
 // Vertex data (buffer)
-float positions[16] = {
-    100.0f, 100.0f, 0.0f, 0.0f, // 0
-    200.0f, 100.0f, 1.0f, 0.0f, // 1
-    200.0f, 200.0f, 1.0f, 1.0f, // 2
-    100.0f, 200.0f, 0.0f, 1.0f  // 3
+float positions[128] = {
+    100.0f, 100.0f, 0.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 0
+    200.0f, 100.0f, 1.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 1
+    200.0f, 200.0f, 1.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 2
+    100.0f, 200.0f, 0.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 3
+
+    200.0f, 100.0f, 0.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 0
+    300.0f, 100.0f, 1.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 1
+    300.0f, 200.0f, 1.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 2
+    200.0f, 200.0f, 0.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 3
+
+    100.0f, 200.0f, 0.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 0
+    200.0f, 200.0f, 1.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 1
+    200.0f, 300.0f, 1.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 2
+    100.0f, 300.0f, 0.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 3
+
+    200.0f, 200.0f, 0.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 0
+    300.0f, 200.0f, 1.0f, 0.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 1
+    300.0f, 300.0f, 1.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f, // 2
+    200.0f, 300.0f, 0.0f, 1.0f, 0.3f, 0.3f, 0.4f, 1.0f  // 3
 };
 
 // Index buffer
-unsigned int indices[6] = {
+unsigned int indices[24] = {
     0, 1, 2,
-    2, 3, 0
+    2, 3, 0,
+
+    4, 5, 6,
+    6, 7, 4,
+
+    8, 9, 10,
+    10, 11, 8,
+
+    12, 13, 14,
+    14, 15, 12
 };
 
-StateBatchRender::StateBatchRender() :  m_indexBuffer(indices, 6),
+StateBatchRender::StateBatchRender() :  m_indexBuffer(indices, 24),
                                 m_shader("../engine/res/shaders/texture.sh"),
                                 m_texture("../engine/res/images/gray.png"),
-                                m_vertexBuffer(positions, 4 * 4 * sizeof(float)),
+                                m_vertexBuffer(positions, 8 * 16 * sizeof(float)),
                                 m_projection(glm::ortho(0.0f, 940.0f, 0.0f, 540.0f, -1.0f, 1.0f)),
                                 m_view(glm::translate(glm::mat4(1.0f), glm::vec3(1, 0, 0))),
                                 m_model(glm::translate(glm::mat4(1.0f), glm::vec3(1, 1, 0))),
                                 m_translationX(0.0f, 0.0f, 0.0f),
-                                m_translationY(100.0f, 100.0f, 0.0f)
+                                m_translationY(200.0f, 200.0f, 0.0f)
                                 {
 
     VertexBufferLayout vertexBufferLayout;
     vertexBufferLayout.push<float>(2); // First 2 floats of vertex
     vertexBufferLayout.push<float>(2); // Second 2 floats of vertex
+    vertexBufferLayout.push<float>(4); // Third 4 floats of vertex
     m_vertexArray.addBuffer(m_vertexBuffer, vertexBufferLayout);
 
     m_shader.bind();
